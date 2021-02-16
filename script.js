@@ -1,24 +1,34 @@
-require(["esri/views/MapView", "esri/WebMap"], function(MapView, WebMap) {
-        /************************************************************
-         * Creates a new WebMap instance. A WebMap must reference
-         * a PortalItem ID that represents a WebMap saved to
-         * arcgis.com or an on-premise portal.
-         *
-         * To load a WebMap from an on-premise portal, set the portal
-         * url with esriConfig.portalUrl.
-         ************************************************************/
-        var webmap = new WebMap({
-          portalItem: {
-            // autocasts as new PortalItem()
-            id: "472d01bf6d7f48b0858427873a3aff7f"
-          }
-        });
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
+    "esri/layers/FeatureLayer"
 
-        /************************************************************
-         * Set the WebMap instance to the map property in a MapView.
-         ************************************************************/
-        var view = new MapView({
-          map: webmap,
-          container: "viewDiv"
-        });
-      });
+  ], function(esriConfig, Map, MapView, FeatureLayer) {
+
+  esriConfig.apiKey = "AAPKadbb47a8f4024f8694017868bb5f8514m-BINeDp-vV1s7yL8zwJeUAP-PbhOik8FZfNUXBo_uzR_cpQj_uun6RO5a5YScF7";
+
+  const map = new Map({
+    basemap: "arcgis-topographic"
+  });
+
+  const view = new MapView({
+    container: "viewDiv",
+    map: map,
+    center: [-92,38],
+    zoom: 7
+  });
+
+  const MO_counties = new FeatureLayer({
+    url: "https://gis.mo.gov/arcgis01/rest/services/BaseMap/county_boundary/MapServer/0"
+  });
+
+  map.add(MO_counties);
+
+  const MO_schools = new FeatureLayer({
+    url: "https://gis.mo.gov/arcgis01/rest/services/DESE/School_District_Holly/MapServer/0"
+  });
+
+  map.add(MO_schools);
+
+  });
